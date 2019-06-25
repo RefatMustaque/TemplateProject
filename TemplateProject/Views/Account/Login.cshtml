@@ -1,0 +1,186 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@using TemplateProject.EntityModels
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Log in";
+}
+
+@section Styles{
+    <link rel="icon" type="image/png" href="~/lib/login-template/images/icons/favicon.ico">
+    <!-- =============================================================================================== -->
+    <link rel="stylesheet" type="text/css" href="~/lib/login-template/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- =============================================================================================== -->
+    <link rel="stylesheet" type="text/css" href="~/lib/login-template/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!-- =============================================================================================== -->
+    <link rel="stylesheet" type="text/css" href="~/lib/login-template/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <!-- =============================================================================================== -->
+    <link rel="stylesheet" type="text/css" href="~/lib/login-template/vendor/animate/animate.css">
+    <!-- =============================================================================================== -->
+    <link rel="stylesheet" type="text/css" href="~/lib/login-template/vendor/css-hamburgers/hamburgers.min.css">
+    <!-- =============================================================================================== -->
+    <link rel="stylesheet" type="text/css" href="~/lib/login-template/vendor/animsition/css/animsition.min.css">
+    <!-- =============================================================================================== -->
+    <link rel="stylesheet" type="text/css" href="~/lib/login-template/vendor/select2/select2.min.css">
+    <!-- =============================================================================================== -->
+    <link rel="stylesheet" type="text/css" href="~/lib/login-template/vendor/daterangepicker/daterangepicker.css">
+    <!-- =============================================================================================== -->
+    <link rel="stylesheet" type="text/css" href="~/lib/login-template/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/lib/login-template/css/main.css">
+}
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form validate-form" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" >
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <span class="login100-form-title p-b-43">Login to continue</span>
+
+                <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                    <input id="email" asp-for="Email" class="input100 has-val" type="text" >
+
+                    <span class="focus-input100"></span>
+                    <span class="label-input100">Email</span>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Password is required">
+                    <input asp-for="Password" class="input100 has-val" type="password" >
+                    <span class="focus-input100"></span>
+                    <span class="label-input100">Password</span>
+                    @*<span asp-validation-for="Password" class="text-danger"></span>*@
+                </div>
+
+                <div class="flex-sb-m w-full p-t-3 p-b-32">
+                    <div class="contact100-form-checkbox">
+                        <input asp-for="RememberMe" class="input-checkbox100" id="ckb1" type="checkbox">
+                        <label class="label-checkbox100" for="ckb1">Remember me</label>
+                    </div>
+
+                    <div>
+                        <a asp-action="ForgotPassword" class="txt1">Forgot Password?</a>
+                    </div>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" type="submit">Login</button>
+                </div>
+
+                <div class="text-center p-t-46 p-b-20">
+                    <span class="txt2">
+                        or sign up using
+                    </span>
+                </div>
+
+                <div class="login100-form-social flex-c-m">
+                    <a href="#" class="login100-form-social-item flex-c-m bg1 m-r-5">
+                        <i class="fa fa-facebook-f" aria-hidden="true"></i>
+                    </a>
+
+                    <a href="#" class="login100-form-social-item flex-c-m bg2 m-r-5">
+                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </form>
+
+            <div class="login100-more" style="background-image: url('/lib/login-template/images/bg-01.jpg');">
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<h2>@ViewData["Title"]</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <section>
+                <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <h4>Use a local account to log in.</h4>
+                    <hr />
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label asp-for="RememberMe">
+                                <input asp-for="RememberMe" />
+                                @Html.DisplayNameFor(m => m.RememberMe)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">Log in</button>
+                    </div>
+                    <div class="form-group">
+                        <p>
+                            <a asp-action="ForgotPassword">Forgot your password?</a>
+                        </p>
+                    </div>
+                </form>
+            </section>
+        </div>
+        <div class="col-md-6 col-md-offset-2">
+            <section>
+                <h4>Use another service to log in.</h4>
+                <hr />
+                @{
+                    var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                    if (loginProviders.Count == 0)
+                    {
+                        <div>
+                            <p>
+                                There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                                for details on setting up this ASP.NET application to support logging in via external services.
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    @foreach (var provider in loginProviders)
+                                    {
+                                        <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
+                                    }
+                                </p>
+                            </div>
+                        </form>
+                    }
+                }
+            </section>
+        </div>
+    </div>*@
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script src="~/lib/login-template/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+    <script src="~/lib/login-template/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+    <script src="~/lib/login-template/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/lib/login-template/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+    <script src="~/lib/login-template/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+    <script src="~/lib/login-template/vendor/daterangepicker/moment.min.js"></script>
+    <script src="~/lib/login-template/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+    <script src="~/lib/login-template/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+    <script src="~/lib/login-template/js/main.js"></script>
+
+}

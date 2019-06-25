@@ -1,0 +1,12 @@
+E:\Project\hms-mayfair\TemplateProject\bin\Debug\netcoreapp2.0\TemplateProject.deps.json
+E:\Project\hms-mayfair\TemplateProject\bin\Debug\netcoreapp2.0\TemplateProject.runtimeconfig.json
+E:\Project\hms-mayfair\TemplateProject\bin\Debug\netcoreapp2.0\TemplateProject.runtimeconfig.dev.json
+E:\Project\hms-mayfair\TemplateProject\bin\Debug\netcoreapp2.0\TemplateProject.dll
+E:\Project\hms-mayfair\TemplateProject\bin\Debug\netcoreapp2.0\TemplateProject.pdb
+E:\Project\hms-mayfair\TemplateProject\obj\Debug\netcoreapp2.0\TemplateProject.csprojAssemblyReference.cache
+E:\Project\hms-mayfair\TemplateProject\obj\Debug\netcoreapp2.0\TemplateProject.csproj.CoreCompileInputs.cache
+E:\Project\hms-mayfair\TemplateProject\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+E:\Project\hms-mayfair\TemplateProject\obj\Debug\netcoreapp2.0\TemplateProject.AssemblyInfoInputs.cache
+E:\Project\hms-mayfair\TemplateProject\obj\Debug\netcoreapp2.0\TemplateProject.AssemblyInfo.cs
+E:\Project\hms-mayfair\TemplateProject\obj\Debug\netcoreapp2.0\TemplateProject.dll
+E:\Project\hms-mayfair\TemplateProject\obj\Debug\netcoreapp2.0\TemplateProject.pdb

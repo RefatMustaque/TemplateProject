@@ -1,0 +1,46 @@
+﻿@using TemplateProject.EnumsAndConstants
+@model IEnumerable<TemplateProject.Models.EmployeeViewModels.EmployeeGridVm>
+
+
+<table class="table table-striped table-bordered" style="width:100%" id="employeeTable" >
+    <thead>
+        <tr>
+            <th class="col-md-2">Id</th>
+            <th class="col-md-2">Name</th>
+            <th class="col-md-2">Joining Date</th>
+            <th class="col-md-2">Gender</th>
+            <th class="col-md-2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="col-md-2">@item.Id</td>
+                <td class="col-md-2">@item.Name</td>
+                <td class="col-md-2">@item.JoinDate.ToShortDateString()</td>
+                <td class="col-md-2">@item.Gender</td>
+                <td class="col-md-2">
+                    <button data-employeeId="@item.Id" type="button" data-target="#modal-employee-userAccess"
+                            data-toggle="modal" class="btn btn-info userAccess">
+                        <i class="fa fa-user"> User Access</i>
+                    </button>
+                    @if (User.HasClaim(c => c.Type == EmployeeClaims.EditView))
+                    {
+                        <button data-employeeId="@item.Id" type="button" data-target="#modal-employee-edit"
+                                data-toggle="modal" class="btn btn-info btnForEdit">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    }
+                    @if (User.HasClaim(c => c.Type == EmployeeClaims.Delete))
+                    {
+                        <button type="button" data-employeeId="@item.Id" class="btn btn-danger delete">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

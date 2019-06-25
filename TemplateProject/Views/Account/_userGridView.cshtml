@@ -1,0 +1,45 @@
+﻿@using TemplateProject.EnumsAndConstants
+@model IEnumerable<TemplateProject.Models.AccountViewModels.ApplicationUserVm>
+
+<table id="userTable"
+       class="table table-hover table-striped table-bordered table-advanced tablesorter display">
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th width="20%">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.UserName</td>
+            <td>
+                @if (User.HasClaim(c => c.Type == AccountClaims.Delete))
+                {
+                    <button type="button" data-userId="@item.Id" class="btn btn-danger delete btn-xs">
+                        <i class="fa fa-trash-o"></i>&nbsp;
+                        Remove
+                    </button>
+                }
+
+                @if (User.HasClaim(c => c.Type == AccountClaims.UserPermissionView))
+                {
+                    <button type="button" data-userId="@item.Id" data-target="#modal-claim-view"
+                            data-toggle="modal" class="btn btn-blue permissionBtn btn-xs">
+                        Permissions
+                    </button>
+                }
+                @if (User.HasClaim(c => c.Type == AccountClaims.UserRolesView))
+                {
+                    <button type="button" data-userId="@item.Id" data-target="#modal-addRole-view"
+                            data-toggle="modal" class="btn btn-primary addToRoleBtn btn-xs">
+                        Roles
+                    </button>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

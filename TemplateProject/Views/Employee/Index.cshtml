@@ -1,0 +1,269 @@
+﻿@using TemplateProject.EnumsAndConstants
+@model TemplateProject.Models.EmployeeViewModels.EmployeeCreateVm
+
+@{
+    ViewData["Title"] = "Employee";
+    ViewData["TitleDescription"] = "Create, update or delete employee";
+}
+
+@if (User.HasClaim(c => c.Type == EmployeeClaims.Create))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" data-target="#modal-employee-create"
+                    data-toggle="modal" class="btn btn-blue">
+                Add New Employee
+            </button>
+        </div>
+    </div>
+
+    <hr />
+}
+
+
+
+@if (User.HasClaim(c => c.Type == EmployeeClaims.EmployeeListTable))
+{
+    <div style="min-height: 800px;">
+        <div class="panel panel-blue">
+            <div class="panel-heading">Employee List</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label">Branch</label>
+                    <div class="input-icon right">
+                        <select id="BranchList" asp-items="Model.BranchList" style="width:100%">
+                            <option value="">Branch</option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="BranchId" class="text-danger"></span>
+                </div>
+                <div id="employeeTableAlert">
+
+                </div>
+                <div class="table-responsive" id="employeeTableDiv">
+                    <table class="table table-striped table-bordered" style="width:100%" id="employeeTable">
+                        <thead>
+                            <tr>
+                                <th class="col-md-2">Id</th>
+                                <th class="col-md-2">Name</th>
+                                <th class="col-md-2">Joining Date</th>
+                                <th class="col-md-2">Gender</th>
+                                <th class="col-md-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.EmployeGridVms)
+                            {
+                                <tr>
+                                    <td class="col-md-2">@item.Id</td>
+                                    <td class="col-md-2">@item.Name</td>
+                                    <td class="col-md-2">@item.JoinDate.ToShortDateString()</td>
+                                    <td class="col-md-2">@item.Gender</td>
+                                    <td class="col-md-2">
+                                        <button data-employeeId="@item.Id" type="button" data-target="#modal-employee-userAccess"
+                                                data-toggle="modal" class="btn btn-info userAccess">
+                                            <i class="fa fa-user"> User Access</i>
+                                        </button>
+
+                                        @if (User.HasClaim(c => c.Type == EmployeeClaims.EditView))
+                                        {
+                                            <button data-employeeId="@item.Id" type="button" data-target="#modal-employee-edit"
+                                                    data-toggle="modal" class="btn btn-info btnForEdit">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        }
+                                        @if (User.HasClaim(c => c.Type == EmployeeClaims.Delete))
+                                        {
+                                            <button type="button" data-employeeId="@item.Id" class="btn btn-danger delete">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (User.HasClaim(c => c.Type == EmployeeClaims.Create))
+{
+    <div id="modal-employee-create" tabindex="-1" role="dialog" style="top:50px" aria-labelledby="modal-responsive-label"
+         aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content panel panel-blue">
+                <div class="modal-header panel-heading">
+                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                            class="close">
+                        &times;
+                    </button>
+                    <h4 id="modal-responsive-label" class="modal-title">Add New Employee</h4>
+                </div>
+                <div class="modal-body panel-body">
+
+                    <div id="employeeFormDiv">
+                        <form data-ajax-url="/Employee/Index" data-ajax="true" data-ajax-method="post" data-ajax-update="#employeeFormDiv" data-ajax-success="OnSuccessEmployeeCreate(data)" data-ajax-failure="OnFailureEmployeeCreate()">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-body pal">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="BranchId" class="control-label"></label>
+                                            <div class="input-icon right">
+                                                <select asp-for="BranchId" asp-items="Model.BranchList" class="form-control">
+                                                    <option value="">Branch</option>
+                                                </select>
+                                            </div>
+                                            <span asp-validation-for="BranchId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="Id" class="control-label"></label>
+                                            <div class="input-icon right"><input asp-for="Id" type="text" placeholder="Employee Id" class="form-control" readonly></div>
+                                            <span asp-validation-for="Id" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="Department" class="control-label"></label>
+                                            <div class="input-icon right">
+                                                <select asp-for="Department" asp-items="Model.DepartmentList" class="form-control">
+                                                    <option value="">Department</option>
+                                                </select>
+                                            </div>
+                                            <span asp-validation-for="Department" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="Name" class="control-label"></label>
+                                            <div class="input-icon right"><input asp-for="Name" type="text" placeholder="Name" class="form-control"></div>
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="Gender" class="control-label"></label>
+                                            <div class="input-icon right">
+                                                <select asp-for="Gender" asp-items="Model.GenderList" class="form-control">
+                                                    <option value="">Gender</option>
+                                                </select>
+                                            </div>
+                                            <span asp-validation-for="Gender" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="JoinDate" class="control-label"></label>
+                                            <div class="input-icon right"><i class="fa fa-calendar"></i><input asp-for="JoinDate" type="text" placeholder="Joining Date" class="form-control"></div>
+                                            <span asp-validation-for="JoinDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="employeeAlert" class="col-md-12">
+
+                            </div>
+                            <div class="form-actions text-right pal">
+                                @if (User.HasClaim(c => c.Type == EmployeeClaims.Clear))
+                                {
+                                    <btn id="formClearButton" class="btn btn-info"> Clear </btn>
+                                }
+                                @if (User.HasClaim(c => c.Type == EmployeeClaims.Create))
+                                {
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                }
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@if (User.HasClaim(c => c.Type == EmployeeClaims.EditView))
+{
+    <div id="modal-employee-edit" tabindex="-1" role="dialog" style="top:50px" aria-labelledby="modal-responsive-label"
+         aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content panel panel-blue">
+                <div class="modal-header panel-heading">
+                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                            class="close">
+                        &times;
+                    </button>
+                    <h4 id="modal-responsive-label" class="modal-title">Update Emlployee Information</h4>
+                </div>
+                <div class="modal-body panel-body">
+                    <div id="employeeEditFormDiv">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-blue">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (User.HasClaim(c => c.Type == EmployeeClaims.EmployeeUserAccessView))
+{
+    <div id="modal-employee-userAccess" tabindex="-1" role="dialog" style="top:50px" aria-labelledby="modal-responsive-label"
+         aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content panel panel-blue">
+                <div class="modal-header panel-heading">
+                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                            class="close">
+                        &times;
+                    </button>
+                    <h4 id="modal-responsive-label" class="modal-title">Employee User Acceess</h4>
+                </div>
+                <div class="modal-body panel-body">
+                    <div id="employeeUserAccessDiv">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-blue">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+
+@section Styles {
+    <link href="~/vendors/data-table_rijvy/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="~/vendors/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <link href="~/vendors/select2/select2.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/vendors/data-table_rijvy/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="~/vendors/data-table_rijvy/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+    <script src="~/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/vendors/select2/select2.js"></script>
+    <script src="~/js/TemplateProject/Employee/Index.js"></script>
+    <script>
+        $("#BranchList").select2();
+    </script>
+}

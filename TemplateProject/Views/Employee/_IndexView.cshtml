@@ -1,0 +1,81 @@
+﻿@using TemplateProject.EnumsAndConstants
+@model TemplateProject.Models.EmployeeViewModels.EmployeeCreateVm
+
+<form data-ajax-url="/Employee/Index" data-ajax="true" data-ajax-method="post" data-ajax-update="#employeeFormDiv" data-ajax-success="OnSuccessEmployeeCreate(data)" data-ajax-failure="OnFailureEmployeeCreate()">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-body pal">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="BranchId" class="control-label"></label>
+                    <div class="input-icon right">
+                        <select asp-for="BranchId" asp-items="Model.BranchList" class="form-control">
+                            <option value="">Branch</option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="BranchId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Id" class="control-label"></label>
+                    <div class="input-icon right"><input asp-for="Id" type="text" placeholder="Employee Id" class="form-control" readonly></div>
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Department" class="control-label"></label>
+                    <div class="input-icon right">
+                        <select asp-for="Department" asp-items="Model.DepartmentList" class="form-control">
+                            <option value="">Type</option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="Department" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <div class="input-icon right"><input asp-for="Name" type="text" placeholder="Name" class="form-control"></div>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <div class="input-icon right">
+                        <select asp-for="Gender" asp-items="Model.GenderList" class="form-control">
+                            <option value="">Gender</option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="JoinDate" class="control-label"></label>
+                    <div class="input-icon right"><i class="fa fa-calendar"></i><input asp-for="JoinDate" type="text" placeholder="Joining Date" class="form-control"></div>
+                    <span asp-validation-for="JoinDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="employeeAlert" class="col-md-12">
+
+    </div>
+    <div class="form-actions text-right pal">
+        @if (User.HasClaim(c => c.Type == EmployeeClaims.Clear))
+        {
+            <btn id="formClearButton" class="btn btn-info"> Clear </btn>
+        }
+        
+        @if (User.HasClaim(c => c.Type == EmployeeClaims.Create))
+        {
+            <button type="submit" class="btn btn-primary">Save</button>
+        }
+    </div>
+</form>
+

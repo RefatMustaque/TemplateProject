@@ -1,0 +1,29 @@
+﻿@model TemplateProject.Models.EmployeeViewModels.UserAccessVm
+
+
+
+<form data-ajax-url="/Employee/UserAccess" data-ajax="true" data-ajax-method="post" data-ajax-update="#employeeUserAccessDiv" data-ajax-success="OnSuccessUserAccess(data)" data-ajax-failure="OnFailureUserAccess()">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="UserTypeId" type="hidden" />
+    <div class="form-group">
+        @if (Model.UserAssignedName != null)
+        {
+            <h3 id="userAssignedUserName">
+                User Assigned : @Model.UserAssignedName
+            </h3>
+        }
+        <label asp-for="UserId" class="control-label"></label>
+        <div class="input-icon right">
+            <select asp-for="UserId" asp-items="Model.UserList" class="form-control">
+                <option value="">User</option>
+            </select>
+        </div>
+        <span asp-validation-for="UserId" class="text-danger"></span>
+    </div>
+    <div id="userAccessAlert">
+
+    </div>
+    <div class="form-group pull-right">
+        <input type="submit" value="Set User Access" class="btn btn-primary" />
+    </div>
+</form>

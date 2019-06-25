@@ -1,0 +1,26 @@
+﻿@using TemplateProject.EnumsAndConstants
+@model TemplateProject.Models.RoleViewModels.RoleCreateVm
+
+
+        <form data-ajax-url="/Role/Create" data-ajax="true" data-ajax-method="post" data-ajax-update="#employeeFormDiv" data-ajax-success="OnSuccessRoleCreate(data)">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-body pal">
+
+                <div class="form-group">
+                    <div class="input-icon right">
+                        <i class="fa fa-user"></i><input asp-for="RoleName" type="text" placeholder="Role" class="form-control">
+                        <span asp-validation-for="RoleName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div id="roleCreateAlert" class="col-md-12">
+
+            </div>
+            <div class="form-actions text-right pal">
+                @if (User.HasClaim(c => c.Type == RoleClaims.Create))
+                {
+                    <button type="submit" class="btn btn-primary">Create</button>
+                }
+            </div>
+        </form>
+

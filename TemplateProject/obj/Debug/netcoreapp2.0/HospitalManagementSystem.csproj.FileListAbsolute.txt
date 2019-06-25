@@ -1,0 +1,12 @@
+E:\Project\hms-mayfair\HospitalManagementSystem\obj\Debug\netcoreapp2.0\HospitalManagementSystem.csprojAssemblyReference.cache
+E:\Project\hms-mayfair\HospitalManagementSystem\obj\Debug\netcoreapp2.0\HospitalManagementSystem.csproj.CoreCompileInputs.cache
+E:\Project\hms-mayfair\HospitalManagementSystem\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+E:\Project\hms-mayfair\HospitalManagementSystem\obj\Debug\netcoreapp2.0\HospitalManagementSystem.AssemblyInfoInputs.cache
+E:\Project\hms-mayfair\HospitalManagementSystem\obj\Debug\netcoreapp2.0\HospitalManagementSystem.AssemblyInfo.cs
+E:\Project\hms-mayfair\HospitalManagementSystem\bin\Debug\netcoreapp2.0\HospitalManagementSystem.deps.json
+E:\Project\hms-mayfair\HospitalManagementSystem\bin\Debug\netcoreapp2.0\HospitalManagementSystem.runtimeconfig.json
+E:\Project\hms-mayfair\HospitalManagementSystem\bin\Debug\netcoreapp2.0\HospitalManagementSystem.runtimeconfig.dev.json
+E:\Project\hms-mayfair\HospitalManagementSystem\bin\Debug\netcoreapp2.0\HospitalManagementSystem.dll
+E:\Project\hms-mayfair\HospitalManagementSystem\bin\Debug\netcoreapp2.0\HospitalManagementSystem.pdb
+E:\Project\hms-mayfair\HospitalManagementSystem\obj\Debug\netcoreapp2.0\HospitalManagementSystem.dll
+E:\Project\hms-mayfair\HospitalManagementSystem\obj\Debug\netcoreapp2.0\HospitalManagementSystem.pdb

@@ -1,0 +1,159 @@
+﻿@using TemplateProject.EnumsAndConstants
+@model TemplateProject.Models.RoleViewModels.RoleIndexVm
+
+@{
+    ViewData["Title"] = "Role";
+
+    ViewData["TitleDescription"] = "Create your desire role";
+}
+
+@if (User.HasClaim(c => c.Type == RoleClaims.Create))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" data-target="#modal-role-create"
+                    data-toggle="modal" class="btn btn-blue">
+                Add New Role
+            </button>
+        </div>
+    </div>
+
+    <hr />
+}
+
+
+@if (User.HasClaim(c => c.Type == RoleClaims.RoleListTable))
+{
+    <div class="portlet portlet-blue box" style="min-height: 700px;">
+        <div class="portlet-header ">
+            <div class="caption">Role List</div>
+        </div>
+        <div class="portlet-body">
+            <div class="row mbm">
+                <div class="col-lg-12">
+                    <div id="tableAlert">
+
+                    </div>
+                    <div class="table-responsive" id="roleTableDiv">
+                        <table id="roleTable" class="table table-striped table-bordered" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Role</th>
+                                    <th width="15%">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.RoleList)
+                                {
+                                    <tr>
+                                        <td>@item.RoleName</td>
+                                        <td>
+                                            @if (User.HasClaim(c => c.Type == RoleClaims.Delete))
+                                            {
+                                                <button type="button" data-roleId="@item.Id" class="btn btn-danger delete btn-xs">
+                                                    <i class="fa fa-trash-o"></i>&nbsp;
+                                                    Remove
+                                                </button>
+                                            }
+                                            @if (User.HasClaim(c => c.Type == RoleClaims.ChangePermission))
+                                            {
+                                                <button type="button" data-roleId="@item.Id" data-target="#modal-claim-view"
+                                                        data-toggle="modal" class="btn btn-blue permissionBtn btn-xs">
+                                                    Permissions
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (User.HasClaim(c => c.Type == RoleClaims.Create))
+{
+    <div id="modal-role-create" tabindex="-1" role="dialog" style="top:50px" aria-labelledby="modal-responsive-label"
+         aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content panel panel-blue">
+                <div class="modal-header panel-heading">
+                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                            class="close">
+                        &times;
+                    </button>
+                    <h4 id="modal-responsive-label" class="modal-title">Create New Role</h4>
+                </div>
+                <div class="modal-body panel-body" id="employeeFormDiv">
+                    <form data-ajax-url="/Role/Create" data-ajax="true" data-ajax-method="post" data-ajax-update="#employeeFormDiv" data-ajax-success="OnSuccessRoleCreate(data)">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-body pal">
+
+                            <div class="form-group">
+                                <div class="input-icon right">
+                                    <label asp-for="RoleCreateVm.RoleName" class="control-label">Role</label>
+                                    <i class="fa fa-user"></i><input asp-for="RoleCreateVm.RoleName" type="text" placeholder="Role" class="form-control">
+                                    <span asp-validation-for="RoleCreateVm.RoleName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="roleCreateAlert" class="col-md-12">
+
+                        </div>
+                        <div class="form-actions text-right pal">
+                            @if (User.HasClaim(c => c.Type == RoleClaims.Create))
+                            {
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            }
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-blue">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (User.HasClaim(c => c.Type == RoleClaims.RolePermissionView))
+{
+    <div id="modal-claim-view" tabindex="-1" role="dialog" style="top:50px" aria-labelledby="modal-responsive-label"
+         aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content panel panel-blue">
+                <div class="modal-header panel-heading">
+                    <button type="button" data-dismiss="modal" aria-hidden="true"
+                            class="close">
+                        &times;
+                    </button>
+                    <h4 id="" class="modal-title">Set Permission For Role</h4>
+                </div>
+                <div class="modal-body panel-body" id="claimViewDiv">
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-blue">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section Styles {
+    <link href="~/vendors/data-table_modified/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/vendors/data-table_modified/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="~/vendors/data-table_modified/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+    <script src="~/js/TemplateProject/Role/Index.js"></script>
+}

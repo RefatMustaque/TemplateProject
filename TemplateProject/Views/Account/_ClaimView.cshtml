@@ -1,0 +1,34 @@
+﻿@using TemplateProject.EnumsAndConstants
+@model TemplateProject.Models.AccountViewModels.UserClaimVm
+
+
+<div id="claimTableAlert">
+
+</div>
+<div class="table-responsive" id="claimTableDiv">
+    <table id="claimTable"
+           class="table table-hover table-striped table-bordered table-advanced tablesorter display">
+        <thead>
+        <tr>
+            <th>Permission</th>
+            <th>Claim Description</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        @foreach (var item in Model.ClaimList)
+        {
+            <tr>
+                <td>
+                    @if (User.HasClaim(c => c.Type == AccountClaims.ChangePermission))
+                    {
+                        <input type="checkbox" class="ClaimCheckbox" checked="@item.Selected" data-claimValue="@item.Value" data-userId="@Model.UserId"/>
+                    }
+                    &nbsp;
+                </td>
+                <td>@item.Text</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

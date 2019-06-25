@@ -1,0 +1,36 @@
+﻿@*@model ErrorViewModel*@
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="panel panel-red">
+    <div class="panel-heading">
+        <h1 class="">Error.</h1>
+    </div>
+    <div class="panel-body">
+        <p class="">An error occurred while processing your request.</p>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>
+
+
+<div class="panel panel-green">
+    <div class="panel-heading">
+        <h3>@ViewBag.GuidelineMessage</h3>
+    </div>
+    <div class="panel-body">
+        <p style="word-wrap:break-word">
+            @ViewBag.ErrorMessage
+        </p>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>
+
+
+
+
+
